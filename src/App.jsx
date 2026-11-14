@@ -4,7 +4,7 @@ import './App.css'
 function App() {
   
   return (
-    <div>
+    <div className='bg-red-900 w-28 h-28 text-white'>
       ggg
     </div>
   )

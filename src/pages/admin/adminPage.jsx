@@ -37,7 +37,7 @@ export default function AdminPage(){
             {/* -------------------------------------------------------------------------------------------- */}
 
 
-            <div className='w-[calc(100vw-200px)] bg-pink-200'>
+            <div className='w-[calc(100vw-200px)]'>
                 <Routes path="/*">
                     <Route path="/bookings" element={<h1>Bookings</h1>}/>
                     <Route path="/items" element={<AdminItemPage/>}/>

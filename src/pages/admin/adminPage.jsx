@@ -2,6 +2,7 @@ import { BsGraphDown } from "react-icons/bs";
 import { FaRegBookmark, FaRegUser } from "react-icons/fa";
 import { MdOutlineSpeaker, MdOutlineStarBorder,} from 'react-icons/md';
 import { Link, Route, Routes } from "react-router-dom";
+import AdminItemPage from "./adminItemPage";
 
 export default function AdminPage(){
 
@@ -18,10 +19,10 @@ export default function AdminPage(){
                     <FaRegBookmark />
                     Bookings
                 </Link>
-                <button className='w-full h-[40px] text-[25px] font-bold flex justify-center items-center'>
+                <Link to="/admin/items" className='w-full h-[40px] text-[25px] font-bold flex justify-center items-center'>
                     <MdOutlineSpeaker />
                     Items
-                </button>
+                </Link>
                 <button className='w-full h-[40px] text-[25px] font-bold flex justify-center items-center'>
                     <MdOutlineStarBorder />
                     Reviews
@@ -39,7 +40,7 @@ export default function AdminPage(){
             <div className='w-[calc(100vw-200px)] bg-pink-200'>
                 <Routes path="/*">
                     <Route path="/bookings" element={<h1>Bookings</h1>}/>
-                    <Route path="/items" element={<h1>Items</h1>}/>
+                    <Route path="/items" element={<AdminItemPage/>}/>
                     <Route path="/reviews" element={<h1>Reviews</h1>}/>
                     <Route path="/users" element={<h1>Users</h1>}/>
                 </Routes>

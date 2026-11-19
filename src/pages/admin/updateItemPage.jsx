@@ -24,7 +24,7 @@ export default function UpdateItemPage() {
 
         if(token){
             try{
-            const result = await axios.put("http://localhost:3000/api/products/"+itemKey,{
+            const result = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/products/${itemKey}`,{
                 name: itemName,
                 price: itemPrice,
                 category: itemCategory,

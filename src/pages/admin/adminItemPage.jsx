@@ -79,7 +79,7 @@ export default function AdminItemPage() {
         if(!itemsLoaded){
             const token = localStorage.getItem("token");
 
-            axios.get("http://localhost:3000/api/products", {
+            axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/products`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -101,7 +101,7 @@ export default function AdminItemPage() {
             setItems(items.filter((item)=> item.key !== key))
             const token = localStorage.getItem("token");
             axios.delete(
-            `http://localhost:3000/api/products/${key}`,
+            `${import.meta.env.VITE_BACKEND_URL}/api/products/${key}`,
             {
                 headers: {
                     Authorization: `Bearer ${token}`

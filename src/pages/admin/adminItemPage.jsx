@@ -75,27 +75,29 @@ export default function AdminItemPage() {
 
     useEffect(() => {
 
-        const token = localStorage.getItem("token");
+        if(!itemsLoaded){
+            const token = localStorage.getItem("token");
 
-        axios.get("http://localhost:3000/api/products", {
+            axios.get("http://localhost:3000/api/products", {
             headers: {
                 Authorization: `Bearer ${token}`
             }
-        })
-        .then((res) => {
-            setItems(res.data);
-        })
-        .catch((err) => {
-            console.error(err)
-            toast.error("Failed to load products");
-        });
-
+            })
+            .then((res) => {
+                setItems(res.data);
+                SetItemsLoaded(true)
+            })
+            .catch((err) => {
+                console.error(err)
+                toast.error("Failed to load products");
+            });
+        }
     }, [itemsLoaded]);
 
     const handleDelete = (key) => {
 
         if(window.confirm("Are you sure you want to delete this item?")){
-            // setItems(items.filter((item)=> item.key !== key))
+            setItems(items.filter((item)=> item.key !== key))
             const token = localStorage.getItem("token");
             axios.delete(
             `http://localhost:3000/api/products/${key}`,
@@ -104,18 +106,18 @@ export default function AdminItemPage() {
                     Authorization: `Bearer ${token}`
                 }
             }
-        )
-        .then((res) => {
-            console.log(res.data)
-            toast.success("Product deleted successfully");
-            SetItemsLoaded(!itemsLoaded);
-        })
-        .catch((err) => {
-            console.error(err);
-            toast.error("Failed to delete product");
-        });
+            )
+            .then((res) => {
+                console.log(res.data)
+                toast.success("Product deleted successfully");
+                SetItemsLoaded(false);
+            })
+            .catch((err) => {
+                console.error(err);
+                toast.error("Failed to delete product");
+            });
 
-    }
+        }
     }
 
     return (
@@ -136,6 +138,9 @@ export default function AdminItemPage() {
                     </p>
                 </div>
 
+                {!itemsLoaded &&<div className="border-4 border-b-green-500 w-100px w-[100px] h-[100px] rounded-full animate-spin"></div>}
+
+
                 <div className="bg-white px-5 py-3 rounded-xl shadow-sm border">
                     <p className="text-sm text-gray-500">
                         Total Products
@@ -148,9 +153,9 @@ export default function AdminItemPage() {
 
             </div>
 
-
+        
             {/* Product Table */}
-
+        {itemsLoaded &&
             <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
                 <div className="overflow-x-auto">
 
@@ -273,7 +278,7 @@ export default function AdminItemPage() {
                 </div>
 
             </div>
-
+            }
 
             {/* Add Product Button */}
 

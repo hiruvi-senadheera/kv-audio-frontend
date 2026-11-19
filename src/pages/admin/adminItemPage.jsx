@@ -1,77 +1,78 @@
-const sampleArr = [
-    {
-        key: "AUD001",
-        name: "JBL PartyBox 310",
-        price: 8500,
-        category: "audio",
-        dimensions: "32.6 x 68.8 x 36.8 cm",
-        description: "Powerful portable party speaker with dynamic light effects and deep bass. Ideal for parties and outdoor events.",
-        availability: true,
-        image: [
-            "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=500"
-        ]
-    },
-    {
-        key: "AUD002",
-        name: "Wireless Microphone",
-        price: 2500,
-        category: "microphone",
-        dimensions: "25 x 5 x 5 cm",
-        description: "High-quality wireless microphone suitable for speeches, presentations, karaoke and live performances.",
-        availability: true,
-        image: [
-            "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=500"
-        ]
-    },
-    {
-        key: "AUD003",
-        name: "Professional DJ Mixer",
-        price: 6500,
-        category: "audio",
-        dimensions: "52 x 32 x 10 cm",
-        description: "Professional DJ mixer with multiple audio channels, sound control and connectivity options. Perfect for DJ events.",
-        availability: true,
-        image: [
-            "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=500"
-        ]
-    },
-    {
-        key: "AUD004",
-        name: "Studio Headphones",
-        price: 1500,
-        category: "accessories",
-        dimensions: "20 x 18 x 9 cm",
-        description: "Comfortable professional studio headphones with clear sound quality. Suitable for music production and audio monitoring.",
-        availability: true,
-        image: [
-            "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500"
-        ]
-    },
-    {
-        key: "AUD005",
-        name: "Professional PA Speaker",
-        price: 7000,
-        category: "speakers",
-        dimensions: "40 x 35 x 65 cm",
-        description: "High-powered PA speaker suitable for weddings, parties, conferences and outdoor events.",
-        availability: false,
-        image: [
-            "https://images.unsplash.com/photo-1545454675-3531b543be5d?w=500"
-        ]
-    }
-]
+// const sampleArr = [
+//     {
+//         key: "AUD001",
+//         name: "JBL PartyBox 310",
+//         price: 8500,
+//         category: "audio",
+//         dimensions: "32.6 x 68.8 x 36.8 cm",
+//         description: "Powerful portable party speaker with dynamic light effects and deep bass. Ideal for parties and outdoor events.",
+//         availability: true,
+//         image: [
+//             "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=500"
+//         ]
+//     },
+//     {
+//         key: "AUD002",
+//         name: "Wireless Microphone",
+//         price: 2500,
+//         category: "microphone",
+//         dimensions: "25 x 5 x 5 cm",
+//         description: "High-quality wireless microphone suitable for speeches, presentations, karaoke and live performances.",
+//         availability: true,
+//         image: [
+//             "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=500"
+//         ]
+//     },
+//     {
+//         key: "AUD003",
+//         name: "Professional DJ Mixer",
+//         price: 6500,
+//         category: "audio",
+//         dimensions: "52 x 32 x 10 cm",
+//         description: "Professional DJ mixer with multiple audio channels, sound control and connectivity options. Perfect for DJ events.",
+//         availability: true,
+//         image: [
+//             "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=500"
+//         ]
+//     },
+//     {
+//         key: "AUD004",
+//         name: "Studio Headphones",
+//         price: 1500,
+//         category: "accessories",
+//         dimensions: "20 x 18 x 9 cm",
+//         description: "Comfortable professional studio headphones with clear sound quality. Suitable for music production and audio monitoring.",
+//         availability: true,
+//         image: [
+//             "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500"
+//         ]
+//     },
+//     {
+//         key: "AUD005",
+//         name: "Professional PA Speaker",
+//         price: 7000,
+//         category: "speakers",
+//         dimensions: "40 x 35 x 65 cm",
+//         description: "High-powered PA speaker suitable for weddings, parties, conferences and outdoor events.",
+//         availability: false,
+//         image: [
+//             "https://images.unsplash.com/photo-1545454675-3531b543be5d?w=500"
+//         ]
+//     }
+// ]
 
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { CiCirclePlus } from "react-icons/ci";
 import { FaEdit, FaTrash } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 export default function AdminItemPage() {
 
-    const [items, setItems] = useState(sampleArr);
+    const [items, setItems] = useState([]);
     const [itemsLoaded, SetItemsLoaded] = useState(false);
+    const navigate = useNavigate()
 
     useEffect(() => {
 
@@ -222,13 +223,18 @@ export default function AdminItemPage() {
 
                                                     {/* Edit Button */}
 
-                                                    <Link to={`/admin/items/edit/${product.key}`}>
+                                                    {/* <Link to={`/admin/items/edit/${product.key}`}> */}
 
-                                                        <button className="bg-blue-100 text-blue-600 p-2.5 rounded-lg hover:bg-blue-600 hover:text-white transition duration-200">
+                                                        <button className="bg-blue-100 text-blue-600 p-2.5 rounded-lg hover:bg-blue-600 hover:text-white transition duration-200"
+                                                        onClick={
+                                                            ()=>{
+                                                                navigate("/admin/items/edit",{state:product})
+                                                            }
+                                                        }>
                                                             <FaEdit />
                                                         </button>
 
-                                                    </Link>
+                                                    {/* </Link> */}
 
 
                                                     {/* Delete Button */}

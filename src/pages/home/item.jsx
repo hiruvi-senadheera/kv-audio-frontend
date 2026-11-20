@@ -1,6 +1,7 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
+import ProductCard from "../../components/productCard"
 
 export default function Item(){
 
@@ -11,12 +12,13 @@ export default function Item(){
 
         if(state == "loading"){
             axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/products`).then((res)=>{
-            setItems(res.data)
-            setState("success")
-        }).catch((err)=>{
-            toast.error(err?.response?.data?.error||"An error occured")
-            setState("error")
-        })
+                console.log(res.data)
+                setItems(res.data)
+                setState("success")
+            }).catch((err)=>{
+                toast.error(err?.response?.data?.error||"An error occured")
+                setState("error")
+            })
         }      
     },[])
 
@@ -38,7 +40,8 @@ export default function Item(){
                 state == "success"&&
                 items.map((item)=>{
                     return(
-                        <h1 key={item.key}>{item.name}</h1>
+                        <ProductCard key={item.key} item={item}/>
+                        // <h1 key={item.key}>{item.name}</h1>
                     )
                 })
             }

@@ -3,6 +3,7 @@ import axios from "axios"
 import { useState } from "react"
 import toast from "react-hot-toast"
 import { useNavigate } from "react-router-dom"
+import mediaUpload from "../../utils/mediaUpload"
 
 export default function AddItemPage() {
 
@@ -12,22 +13,44 @@ export default function AddItemPage() {
     const [itemCategory, setItemCategory] = useState("audio")
     const [itemDimensions, setItemDimensions] = useState("")
     const [itemDescription, setItemDescription] = useState("")
+    const [productImages, setProductImages] = useState([])
     const navigate = useNavigate()
 
     async function handleAdd() {
+
+        const promises = []
+        for(let i=0; i<productImages.length; i++){
+            console.log(productImages[i])
+            const promise = mediaUpload(productImages[i])
+            promises.push(promise)
+            if(i==5){
+                toast.error("You can only upload 25 images at a time")
+                break;
+            }
+        }
+        
 
         console.log(itemKey,itemName,itemPrice,itemCategory,itemDimensions,itemDescription)
         const token = localStorage.getItem("token")
 
         if(token){
             try{
+
+                   // Promise.all(promises).then((result)=>{
+                //     console.log(result)
+                // }).catch((err)=>{
+                //     toast.error(err)
+                // })
+            const imageUrls = await Promise.all(promises)
+
             const result = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/products`,{
                 key: itemKey,
                 name: itemName,
                 price: itemPrice,
                 category: itemCategory,
                 dimensions: itemDimensions,
-                description: itemDescription
+                description: itemDescription,
+                image : imageUrls,
             },{
                 headers : {
                     Authorization : "Bearer " + token
@@ -178,6 +201,20 @@ export default function AddItemPage() {
                             onChange={(e) => setItemDescription(e.target.value)}
                             className="w-full border border-gray-300 rounded-lg p-3 outline-none resize-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
                         />
+
+                    </div>
+
+                    {/* item images */}
+                    <div className="flex flex-col gap-2">
+
+                        <label className="font-semibold text-gray-700">
+                            Item images
+                        </label>
+
+                        <input type="file" multiple onChange={(e)=>{
+                            setProductImages(e.target.files)
+                        }} 
+                        className="w-full p-3 border border-gray-300 rounded-lg outline-none resize-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"/>
 
                     </div>
 

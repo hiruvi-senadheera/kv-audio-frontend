@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom"
+
 export default function ProductCard(props) {
 
     const item = props.item
@@ -89,7 +91,7 @@ export default function ProductCard(props) {
 
 
                     {/* Rent Button */}
-                    <button
+                    <Link to={"/items/"+item.key}
                         disabled={!item.availability}
                         className={`px-5 py-2.5 rounded-xl font-semibold 
                             text-sm transition-all duration-300
@@ -99,7 +101,7 @@ export default function ProductCard(props) {
                             }`}
                     >
                         {item.availability ? "Rent Now" : "Unavailable"}
-                    </button>
+                    </Link>
 
                 </div>
 

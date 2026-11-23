@@ -3,8 +3,10 @@ import axios from "axios"
 import { useState } from "react"
 import toast from "react-hot-toast"
 import { useLocation, useNavigate } from "react-router-dom"
+import mediaUpload from "../../utils/mediaUpload"
 
 export default function UpdateItemPage() {
+
 
     const location = useLocation()
 
@@ -14,10 +16,24 @@ export default function UpdateItemPage() {
     const [itemCategory, setItemCategory] = useState(location.state.category)
     const [itemDimensions, setItemDimensions] = useState(location.state.dimensions)
     const [itemDescription, setItemDescription] = useState(location.state.description)
+    const [productImages, setProductImages] = useState([])
     const navigate = useNavigate()
     
 
     async function handleUpdate() {
+
+        let updatingImages = location.state.image
+
+        if(productImages.length > 0){
+            const promises = []
+            for(let i=0; i<productImages.length; i++){
+                console.log(productImages[i])
+                const promise = mediaUpload(productImages[i])
+                promises.push(promise)
+                
+            }
+            updatingImages = await Promise.all(promises)
+        }
 
         console.log(itemKey,itemName,itemPrice,itemCategory,itemDimensions,itemDescription)
         const token = localStorage.getItem("token")
@@ -29,7 +45,8 @@ export default function UpdateItemPage() {
                 price: itemPrice,
                 category: itemCategory,
                 dimensions: itemDimensions,
-                description: itemDescription
+                description: itemDescription,
+                image : updatingImages
             },{
                 headers : {
                     Authorization : "Bearer " + token
@@ -181,6 +198,20 @@ export default function UpdateItemPage() {
                             onChange={(e) => setItemDescription(e.target.value)}
                             className="w-full border border-gray-300 rounded-lg p-3 outline-none resize-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
                         />
+
+                    </div>
+
+                    {/* item images */}
+                    <div className="flex flex-col gap-2">
+
+                        <label className="font-semibold text-gray-700">
+                            Item images
+                        </label>
+
+                        <input type="file" multiple onChange={(e)=>{
+                            setProductImages(e.target.files)
+                        }} 
+                        className="w-full p-3 border border-gray-300 rounded-lg outline-none resize-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"/>
 
                     </div>
 

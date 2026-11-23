@@ -6,6 +6,7 @@ import LoginPage from './pages/login/login';
 import { Toaster } from 'react-hot-toast';
 import RegisterPage from './pages/register/register';
 import Testing from './components/testing';
+import BookingPage from './pages/home/bookingPage';
 
 function App() {
   
@@ -18,6 +19,7 @@ function App() {
         <Route path='/admin/*' element={<AdminPage/>}/>
         <Route path='/*' element={<HomePage/>}/>
         <Route path='/register' element={<RegisterPage/>}/>
+        <Route path='/booking' element={<BookingPage/>}/>
         
         {/* <Route path='/*' element={<h1>Not Found</h1>}/> */}
       </Routes>

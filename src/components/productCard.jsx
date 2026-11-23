@@ -91,7 +91,7 @@ export default function ProductCard(props) {
 
 
                     {/* Rent Button */}
-                    <Link to={"/product/"+item.key}
+                    <Link to={"/items/"+item.key}
                         disabled={!item.availability}
                         className={`px-5 py-2.5 rounded-xl font-semibold 
                             text-sm transition-all duration-300

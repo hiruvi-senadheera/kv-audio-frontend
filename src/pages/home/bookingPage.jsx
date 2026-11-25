@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { formatDate, loadCart } from "../../utils/cart"
 import BookingItem from "../../components/bookingItem"
 import axios from "axios"
@@ -14,9 +14,31 @@ export default function BookingPage() {
     const [startDate, setStartDate] = useState(today)
     const [endDate, setEndDate] = useState(tomorrow)
 
+    const [total, setTotal] = useState(0)
+
     function reloadCart() {
         setCart(loadCart())
+        calculateTotal()
     }
+
+    function calculateTotal(){
+        const cartInfo = loadCart()
+        cartInfo.startDate = startDate
+        cartInfo.endDate = endDate
+        cartInfo.days = totalDays
+        axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/orders/quotation`,
+            cartInfo
+        ).then((res)=>{
+            console.log(res.data)
+            setTotal(res.data.total)
+        }).catch((err)=>{
+            console.error(err)
+        })
+    }
+
+    useEffect(()=>{
+        calculateTotal()
+    },[startDate, endDate])
 
     // Calculate booking days
     function calculateDays() {
@@ -141,14 +163,27 @@ export default function BookingPage() {
                         </div>
 
                         {/* Total Booking Days */}
-                        <div className="bg-blue-50 rounded-lg p-4 flex justify-between items-center">
+                        <div className=" rounded-lg p-4 flex justify-between items-center">
 
                             <span className="font-medium text-gray-700">
                                 Total Booking Days
                             </span>
 
-                            <span className="text-2xl font-bold text-accent">
+                            <span className="text-lg font-normal text-gray-700">
                                 {totalDays} {totalDays === 1 ? "Day" : "Days"}
+                            </span>
+
+                        </div>
+
+                        {/* Total Amount */}
+                        <div className="bg-blue-50 rounded-lg p-4 flex justify-between items-center">
+
+                            <span className="font-medium text-xl text-gray-700">
+                                Total 
+                            </span>
+
+                            <span className="text-2xl font-bold text-accent">
+                                {total.toFixed(2)}
                             </span>
 
                         </div>

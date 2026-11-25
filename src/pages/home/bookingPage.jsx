@@ -1,6 +1,8 @@
 import { useState } from "react"
 import { formatDate, loadCart } from "../../utils/cart"
 import BookingItem from "../../components/bookingItem"
+import axios from "axios"
+import toast from "react-hot-toast"
 
 export default function BookingPage() {
 
@@ -31,6 +33,29 @@ export default function BookingPage() {
     }
 
     const totalDays = calculateDays()
+
+    // handle Booking Creation
+    function handleBookingCreation(){
+        const cart = loadCart()
+        cart.startDate = startDate
+        cart.endDate = endDate
+        cart.days = totalDays
+
+        const token = localStorage.getItem("token")
+        axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/orders`, cart, {
+            headers : {
+                Authorization: `Bearer ${token}`
+            }
+        }).then((res)=>{
+            console.log(res.data)
+            localStorage.removeItem("cart")
+            toast.success("Booking created")
+            setCart(loadCart())
+        }).catch((err)=>{
+            console.error(err)
+            toast.error("Failed to create booking")
+        })
+    }
 
     return (
     <div>
@@ -131,7 +156,7 @@ export default function BookingPage() {
                     </div>
                     
                     <div className="w-full flex justify-center mt-4">
-                        <button className="bg-accent text-white px-40 py-3 rounded-md">
+                        <button className="bg-accent text-white px-40 py-3 rounded-md" onClick={handleBookingCreation}>
                                 Create Booking
                         </button>
                     </div>

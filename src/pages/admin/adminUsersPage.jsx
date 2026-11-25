@@ -25,7 +25,21 @@ export default function AdminUsersPage() {
             setLoading(false)
         })
 
-    }, [])
+    }, [loading])
+
+    function handleBlockUser(email){
+        const token = localStorage.getItem("token")
+        axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/users/block/${email}`, {}, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }).then((res) => {
+            setLoading(true)
+        }).catch((err) => {
+            console.error("Error: ", err.response?.data || err.message)
+        })
+    }
+    
 
     return (
         <div className="min-h-screen bg-gray-50 p-6">
@@ -63,6 +77,7 @@ export default function AdminUsersPage() {
                                 <th className="px-6 py-4">Phone</th>
                                 <th className="px-6 py-4">Address</th>
                                 <th className="px-6 py-4">Role</th>
+                                <th className="px-6 py-4">Status</th>
                             </tr>
                         </thead>
 
@@ -100,7 +115,7 @@ export default function AdminUsersPage() {
 
                                                 <img
                                                     src={user.profilePicture}
-                                                    alt={user.firstName}
+                                                    // alt={user.firstName}
                                                     className="h-11 w-11 rounded-full border border-gray-200 object-cover"
                                                 />
 
@@ -111,7 +126,7 @@ export default function AdminUsersPage() {
                                         </td>
 
                                         {/* Name */}
-                                        <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-600">
+                                        <td className="whitespace-nowrap px-6 py-4 text-sm font-bold text-gray-600">
                                             {user.firstName} {user.lastName}
                                         </td>
 
@@ -142,6 +157,21 @@ export default function AdminUsersPage() {
                                             </span>
 
                                         </td>
+
+                                        {/* Status */}
+                                        <td className="whitespace-nowrap px-6 py-4"
+                                            onClick={() => handleBlockUser(user.email)}>
+
+                                            <span className={`rounded-full px-4 py-1 text-xs cursor-pointer font-semibold ${
+                                                user.isBlocked
+                                                    ? "bg-red-100 text-red-600"
+                                                    : "bg-green-100 text-green-700"
+                                            }`}>
+                                                {user.isBlocked ? "BLOCKED" : "ACTIVE"}
+                                            </span>
+
+                                        </td>
+                                       
 
                                     </tr>
 

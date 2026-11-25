@@ -5,6 +5,7 @@ import { Link, Route, Routes } from "react-router-dom";
 import AdminItemPage from "./adminItemPage";
 import AddItemPage from "./addItemPage";
 import UpdateItemPage from "./updateItemPage";
+import AdminUsersPage from "./adminUsersPage";
 
 export default function AdminPage(){
 
@@ -29,10 +30,10 @@ export default function AdminPage(){
                     <MdOutlineStarBorder />
                     Reviews
                 </button>
-                <button className='w-full h-[40px] text-[25px] font-bold flex justify-center items-center'>
+                <Link to="/admin/users" className='w-full h-[40px] text-[25px] font-bold flex justify-center items-center'>
                     <FaRegUser />
                     Users
-                </button>
+                </Link>
 
             </div>
 
@@ -46,7 +47,7 @@ export default function AdminPage(){
                     <Route path="/items/add" element={<AddItemPage/>}/>
                     <Route path="/items/edit" element={<UpdateItemPage/>}/>
                     <Route path="/reviews" element={<h1>Reviews</h1>}/>
-                    <Route path="/users" element={<h1>Users</h1>}/>
+                    <Route path="/users" element={<AdminUsersPage/>}/>
                 </Routes>
             </div>
 

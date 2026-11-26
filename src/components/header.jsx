@@ -1,48 +1,3 @@
-// import { useState } from "react";
-// import { FaCartShopping } from "react-icons/fa6";
-// import { GiHamburgerMenu } from "react-icons/gi";
-// import { Link } from "react-router-dom";
-// import MobileNavPanel from "./mobileNavPanel";
-
-
-// export default function Header(){
-
-//     const [navPanelOpen, setNavPanelOpen] = useState(false)
-
-//     return(
-
-//         <header className="w-full h-[100px] shadow-xl flex justify-center items-center relative bg-accent text-white px-10">
-
-//             <img src="/kv-logo.png" alt="logo" className="w-[100px] h-[100px] object-cover absolute left-1 border-[3px] rounded-full"/>
-//             <Link to="/" className="hidden md:block text-[25px] font-bold m-2">
-//                 Home
-//             </Link>
-//             <Link to="/contact" className="hidden md:block text-[25px] font-bold m-2">
-//                 Contact
-//             </Link>
-//             <Link to="/gallery" className="hidden md:block text-[25px] font-bold m-2">
-//                 Gallery
-//             </Link>
-//             <Link to="/items" className="hidden md:block text-[25px] font-bold m-2">
-//                 Items
-//             </Link>
-//             <Link to="/booking" className="hidden md:block text-[25px] font-bold m-2 absolute right-3">
-//                 <FaCartShopping/>
-//             </Link>
-
-//             <GiHamburgerMenu className="md:hidden absolute right-6 text-[24px]" onClick={
-//                 ()=>{
-//                     setNavPanelOpen(true)
-//                 }
-//             }/>
-//             <MobileNavPanel isOpen = {navPanelOpen} setOpen = {setNavPanelOpen}/>
-
-//         </header>
-
-//     )
-
-// }
-
 
 import { useState } from "react"
 import { FaCartShopping } from "react-icons/fa6"
@@ -54,6 +9,8 @@ import MobileNavPanel from "./mobileNavPanel"
 export default function Header() {
 
     const [navPanelOpen, setNavPanelOpen] = useState(false)
+
+    const token = localStorage.getItem("token")
 
     const location = useLocation()
 
@@ -155,6 +112,18 @@ export default function Header() {
                         <FaCartShopping className="text-xl" />
 
                     </Link>
+
+                    {/* Logout button */}
+                    {token != null && (
+                        <button onClick={() => {
+                            localStorage.removeItem("token")
+                            window.location.href = "/login"
+                        }}
+                        className="rounded-full border border-white/60 px-3 py-2 text-xs font-semibold text-white transition-all duration-300 hover:bg-white hover:text-accent active:scale-95 sm:px-4 sm:text-sm md:px-5 md:py-2"
+                        >
+                            Logout
+                        </button>
+                    )}
 
 
                     {/* Mobile Menu Button */}
